@@ -128,7 +128,7 @@ pipeline
       )
             }
         }*/
-   */ stage('Extract ZIP') 
+   /* stage('Extract ZIP') 
 	{
 	   steps
 	   {
@@ -136,7 +136,7 @@ pipeline
 		                  Expand-Archive 'D:/jfrog/dotnetapp.zip' -DestinationPath 'D:/home/'
 		              '''
         } 
-	}/*
+	}*/
 	stage('Deploy to azure') 
 	{
 	   steps
