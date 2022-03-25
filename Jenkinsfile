@@ -31,12 +31,12 @@ pipeline
                 }
             }
         }
-        /*stage("Quality gate") 
+        stage("Quality gate") 
         {
             steps {
                 waitForQualityGate abortPipeline: false, credentialsId: 'squser'
             }
-        }*/
+        }
         stage('build')
         {
             steps
