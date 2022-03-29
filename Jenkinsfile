@@ -5,12 +5,12 @@ def file1 = "aspnet-core-dotnet-core/bin/Debug/netcoreapp1.1/publish"
 
 pipeline 
 {
-    environment
+   /* environment
     {
         appName = "sruthi-webapp"
         resourceGroup = "Training-rg"
         
-    }
+    }*/
     agent any	
 	stages 
 	{
@@ -145,7 +145,8 @@ pipeline
 	   steps
 		{
 		   
-			azureWebAppPublish appName: "${env.appName}", azureCredentialsId: 'Azure', resourceGroup: "${env.resourceGroup}"
+			//azureWebAppPublish appName: "${env.appName}", azureCredentialsId: 'Azure', resourceGroup: "${env.resourceGroup}"
+			azureWebAppPublish azureCredentialsId: params.Credentials_id , resourceGroup: params.ResourceGroup , appName: params.AppName
 	    }
 	}
 	}
