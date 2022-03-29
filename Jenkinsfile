@@ -1,4 +1,6 @@
 def filepath1 = "C:/ProgramData/jenkins/.jenkins/workspace/dotnetappscm/aspnet-core-dotnet-core/aspnet-core-dotnet-core.csproj"
+def file1 = "aspnet-core-dotnet-core/bin/Debug/netcoreapp1.1/publish"
+/*def jfrog path = "D:/jfrog/"*/
 
 
 pipeline 
@@ -41,6 +43,7 @@ pipeline
         {
             steps
             {
+	        echo "Builds the project and its dependencies"
                 bat "dotnet build ${filepath1}"
 		    
             }
@@ -69,7 +72,7 @@ pipeline
                 echo "Deploying to stage environment for more tests!";
                 bat "del *.zip"
                 
-		bat "tar.exe -a -c -f WebApp_${BUILD_NUMBER}.zip aspnet-core-dotnet-core/bin/Debug/netcoreapp1.1/publish"
+		bat "tar.exe -a -c -f WebApp_${BUILD_NUMBER}.zip ${file1}"
                 }
         }*/
         
@@ -93,7 +96,7 @@ pipeline
                   spec: '''{
                    "files": [
                       {
-                      "pattern": "*.zip",
+                      "pattern": "${WORKSPACE}/WebApp_${BUILD_NUMBER}.zip",
                       "target": "sruthi-dotnetapp/"
                       }
                             ]
@@ -121,7 +124,7 @@ pipeline
                                 "files": [
                                   {
                                     "pattern": "sruthi-dotnetapp/*.zip",
-                                    "target": "D:/jfrog/"          
+                                    "target": "${jfrog path}"          
                                   }
                                ]
                               }"""
