@@ -1,6 +1,7 @@
-def filepath1 = "C:/ProgramData/jenkins/.jenkins/workspace/dotnetappscm/aspnet-core-dotnet-core/aspnet-core-dotnet-core.csproj"
-def file1 = "aspnet-core-dotnet-core/bin/Debug/netcoreapp1.1/publish"
-/*def jfrog path = "D:/jfrog/"*/
+def filepath1 = "C:/ProgramData/jenkins/.jenkins/workspace/dotnetappscm/aspnet-core-dotnet-core/aspnet-core-dotnet-core.csproj"//store source file path into a variable named filepath1
+def file1 = "aspnet-core-dotnet-core/bin/Debug/netcoreapp1.1/publish" //published file
+/*def jfrog path = "D:/jfrog/"*/ //Store downloaded artifact from jfrog stage.
+
 
 
 pipeline 
@@ -11,18 +12,18 @@ pipeline
         resourceGroup = "Training-rg"
         
     }*/
-    agent any	
-	stages 
+    agent any	// tells jenkins where to execute the code
+	stages  //used to group the tasks
 	{
-        stage('sonarqube') 
+        stage('sonarqube') //stage is for analysis of code
         {
-            steps
+            steps//it is used to group the step
             {
                 script
                 {
                     
-                    def scannerHome = tool 'SonarScanner for MSBuild'
-                    withSonarQubeEnv('SonarQube Server') 
+                    def scannerHome = tool 'SonarScanner for MSBuild'//define variable to store the installed tool
+                    withSonarQubeEnv('SonarQube Server') //block that allows you to select the SonarQube server you want to interact with
                     {
                         bat "\"${scannerHome}\\SonarScanner.MSBuild.exe\" begin /k:\"demo\""
                         
@@ -33,13 +34,13 @@ pipeline
                 }
             }
         }
-        stage("Quality gate") 
+        stage("Quality gate") // check the status
         {
             steps {
                 waitForQualityGate abortPipeline: false
             }
         }
-        stage('build')
+        stage('build')//Builds the project and its dependencies
         {
             steps
             {
@@ -48,7 +49,7 @@ pipeline
 		    
             }
         }
-        stage('test')
+        stage('test') //The dotnet test command is used to execute unit tests in a given solution
         {
             steps
             {
@@ -56,7 +57,7 @@ pipeline
 		    
             }
         }
-        stage('publish')
+        stage('publish') // application is ready for deployment
         {
             steps
             {
@@ -73,6 +74,7 @@ pipeline
                 bat "del *.zip"
                 
 		bat "tar.exe -a -c -f WebApp_${BUILD_NUMBER}.zip ${file1}"
+		//packaged Zip file name with buildnumber
                 }
         }*/
         
@@ -88,23 +90,23 @@ pipeline
                         )
             }
         }*/
-       /* stage('Upload file to jfrog')
+       /* stage('Upload file to jfrog')//This allows managing the File Specs in a source control
         {
             steps{
                 rtUpload (
-                 serverId:"Artifactory" ,
+                 serverId:"Artifactory" ,//Creating an Artifactory Server Instance also in jenkins
                   spec: '''{
                    "files": [
                       {
                       "pattern": "${WORKSPACE}/WebApp_${BUILD_NUMBER}.zip",
-                      "target": "sruthi-dotnetapp/"
+                      "target": "sruthi-dotnetapp/"// repository in jfrog
                       }
                             ]
                            }''',
                         )
             }
         }/*
-/*stage ('Publish build info') 
+/*stage ('Publish build info') //url for the build
         {
             steps 
             {
@@ -113,7 +115,7 @@ pipeline
                 )
             }
         }*/
-/*stage ('download the artifacts from artifactory')
+/*stage ('download the artifacts from artifactory') //artifacts are downloaded and moved to target path
         {
             steps
             {
@@ -131,15 +133,6 @@ pipeline
       )
             }
         }*/
-   /* stage('Extract ZIP') 
-	{
-	   steps
-	   {
-		   powershell '''
-		                  Expand-Archive 'D:/jfrog/dotnetapp.zip' -DestinationPath 'D:/home/'
-		              '''
-        } 
-	}*/
 	stage('Deploy to azure') 
 	{
 	   steps
